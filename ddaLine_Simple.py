@@ -6,7 +6,7 @@ def setPixel(xcoordinate,ycoordinate):
     glEnd()
     glFlush()
 
-def lineDDA(x0,y0,x1,y1):
+def ddaLine(x0,y0,x1,y1):
     dx = abs(x1-x0)
     dy = abs(y1-y0)
     x, y = x0, y0
