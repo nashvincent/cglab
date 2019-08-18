@@ -16,7 +16,7 @@ def drawCircle(xc, yc, x, y):
     setPixel(xc+y, yc-x)
     setPixel(xc-y, yc-x)
 
-def circleBresenham(xc, yc, r):
+def bresenhamCircle(xc, yc, r):
     x, y = 0, r
     Pk = 3 - 2*r
     drawCircle(xc, yc, x, y)
