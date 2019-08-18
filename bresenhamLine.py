@@ -16,7 +16,7 @@ def sign(a):
     else:
         return 1
 
-def lineBresenham(x0, y0, x1, y1):
+def bresenhamLine(x0, y0, x1, y1):
     x = x1
     y = y1
 
