@@ -1,4 +1,5 @@
 from OpenGL.GL import glBegin, glVertex2i, glEnd, glFlush, GL_POINTS
+from math import sin, cos
 
 def setPixel(xcoordinate, ycoordinate):
     glBegin(GL_POINTS)
