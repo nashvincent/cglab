@@ -3,3 +3,4 @@ point.py
 line.py
 ddaF.py
 .vscode/settings.json
+*.pyc
