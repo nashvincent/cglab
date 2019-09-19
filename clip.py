@@ -4,11 +4,16 @@ from OpenGL.GLUT import *
 import sys
 import cglib
 
+            #NSWE
 CENTER = 0  #0000
 LEFT = 1    #0001 
 RIGHT = 2   #0010 
 BOTTOM = 4  #0100 
-TOP = 8     #1000 
+TOP = 8     #1000
+
+global points, flag
+points = []
+flag = []
 
 def myInit():
     glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -19,14 +24,18 @@ def myInit():
     gluOrtho2D(-250.0, 250.0, -250.0, 250.0)
 
 def readInput():
-    global x0, y0, x1, y1
     global xl ,xr, yt, yb
+    xl, yb = map(int,raw_input("Input first window coordinate: ").split())
+    xr, yt = map(int,raw_input("Input second window coordinate: ").split())
 
-    x0, y0 = map(int,raw_input("Input initial: ").split())
-    x1, y1 = map(int,raw_input("Input final: ").split())
+    n = int(input("Enter the number of lines: "))
 
-    xl, xr = 0, 125
-    yb, yt = 0, 125
+    for i in range(n):
+        x0, y0 = map(int,raw_input("Input initial: ").split())
+        x1, y1 = map(int,raw_input("Input final: ").split())
+
+        flag.append(True)
+        points.append([x0, y0, x1, y1])
 
 def getCode(x, y):
     code = CENTER
@@ -43,14 +52,13 @@ def getCode(x, y):
   
     return code
 
-def clip():
-    global x0, y0, x1, y1
+def clip(coord):
 
-    code1 = getCode(x0, y0)
-    code2 = getCode(x1, y1)
+    code1 = getCode(coord[0], coord[1])
+    code2 = getCode(coord[2], coord[3])
     accept = False
 
-    print code1
+    print code1, code2
 
     while True:
         if code1 == 0 and code2 == 0 :
@@ -66,44 +74,57 @@ def clip():
             codeOut = code1 if code1 != 0 else code2
 
             if codeOut & TOP:
-                x = x0 + ((x1-x0) / (y1-y0)) * (yt-y0)
+                x = coord[0] + ((coord[2]-coord[0]) / (coord[3]-coord[1])) * (yt-coord[1])
                 y = yt
 
             elif codeOut & BOTTOM:
-                x = x0 + ((x1-x0) / (y1-y0)) * (yb-y0)
+                x = coord[0] + ((coord[2]-coord[0]) / (coord[3]-coord[1])) * (yb-coord[1])
                 y = yb
 
             elif codeOut * LEFT:
                 x = xl
-                y = y0 + ((y1-y0) / (x1-x0)) * (xl-x0)
+                y = coord[1] + ((coord[3]-coord[1]) / (coord[2]-coord[0])) * (xl-coord[0])
 
             elif codeOut * RIGHT:
                 x = xr
-                y = y0 + ((y1-y0) / (x1-x0)) * (xr-x0)
+                y = coord[1] + ((coord[3]-coord[1]) / (coord[2]-coord[0])) * (xr-coord[0])
 
             if codeOut == code1:
-                x0 = x
-                y0 = y
-                code1 = getCode(x0, y0)
+                coord[0] = x
+                coord[1] = y
+                code1 = getCode(coord[0], coord[1])
             
             else:
-                x1 = x
-                y1 = y
-                code2 = getCode(x1, y1)
+                coord[2] = x
+                coord[3] = y
+                code2 = getCode(coord[2], coord[3])
 
     if accept == False:
-        x0, y0, x1, y1 = 0, 0, 0, 0
+        coord[0], coord[1], coord[2], coord[3] = 0, 0, 0, 0
+        print ("ACCEPT ERROR")
+        return False
 
-    print (x0, y0, x1, y1)
+    return True
     
 
 def Display():
     glClear(GL_COLOR_BUFFER_BIT)
-    cglib.ddaLine_Simple(x0, y0, x1, y1)
+    for i in range(len(points)):
+        x0 = points[i][0]
+        y0 = points[i][1]
+        x1 = points[i][2]
+        y1 = points[i][3]
+
+        if flag[i] == True:
+            cglib.ddaLine_Simple(x0, y0, x1, y1)
+        else:
+            print "\nLine clipped\n"
+            
 
 def main():
     readInput()
-    clip()
+    for i in range(len(points)):
+        flag[i] = clip(points[i])
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB)
     glutInitWindowSize(500, 500)
