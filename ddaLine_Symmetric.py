@@ -15,7 +15,7 @@ def ddaLine_Symmetric(x0, y0, x1, y1):
 		xIncrement = xIncrement / 2.0
 		yIncrement = yIncrement / 2.0
 
-	while x < x1:
+	while x < x1 or y < y1:
 		setPixel(int(round(x)), int(round(y)))
 
 		x = x + xIncrement
