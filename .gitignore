@@ -4,3 +4,5 @@ line.py
 ddaF.py
 .vscode/settings.json
 *.pyc
+main.py
+lineClipping.py
