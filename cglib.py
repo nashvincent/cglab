@@ -48,8 +48,8 @@ def sign(a):
         return 1
 
 def bresenhamLine(x0, y0, x1, y1):
-    x = x1
-    y = y1
+    x = x0
+    y = y0
 
     dx = abs(x1-x0)
     dy = abs(y1-y0)

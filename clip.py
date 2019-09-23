@@ -100,8 +100,6 @@ def clip(coord):
                 code2 = getCode(coord[2], coord[3])
 
     if accept == False:
-        coord[0], coord[1], coord[2], coord[3] = 0, 0, 0, 0
-        print ("ACCEPT ERROR")
         return False
 
     return True
