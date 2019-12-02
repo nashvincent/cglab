@@ -43,7 +43,7 @@ def draw():
     Bezier()
 
 def Bezier():
-    l = len(pts) - 1
+    num = len(pts) - 1
     count = 0.0
     
     while count <= 1.0:
@@ -51,7 +51,7 @@ def Bezier():
         y = 0.0
 
         for i in range(l + 1):
-            val = combination(l, i) * pow(count, i) * pow(1-count, l-i)
+            val = combination(num, i) * pow(count, i) * pow(1-count, num-i)
             x += val * pts[i][0]
             y += val * pts[i][1]
 
