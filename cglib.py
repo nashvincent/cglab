@@ -1,3 +1,7 @@
+'''
+	Library function to which consists of essential output primitives to use in CG Lab
+'''
+
 from OpenGL.GL import glBegin, glVertex2i, glEnd, glFlush, GL_POINTS
 from math import sin, cos
 
