@@ -1,4 +1,4 @@
-# Computer Graphics Import Library
+# Computer Graphics Import Library  [![HitCount](http://hits.dwyl.io/nashvincent/temp.svg)](http://hits.dwyl.io/nashvincent/temp)
 
 Consists of programs to be imported to perform certain fucntions while doing experiments in Computer Graphics Lab
 
