@@ -1,4 +1,4 @@
-# Computer Graphics using OpengGL in Python  [![HitCount](http://hits.dwyl.io/nashvincent/temp.svg)](http://hits.dwyl.io/nashvincent/temp)
+# Computer Graphics using OpenGL in Python  [![HitCount](http://hits.dwyl.io/nashvincent/temp.svg)](http://hits.dwyl.io/nashvincent/temp)
 
 Output primitives and other computer graphics concepts implemented in PyOpenGL
 
