@@ -2,8 +2,9 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 import sys
+from math import sin, cos, pi, radians
 
-# Assuming homogeneous coordinates is of the from [x, y, 1]
+# Assuming homogeneous coordinates is of the form [x, y, 1]
 matrix = [[1 for x in range(1)] for y in range(3)]
 compositeVector = [[0 for x in range(3)] for y in range(3)]
 vertices = []
@@ -13,7 +14,7 @@ def init():
     glClearColor(0.0, 0.0, 0.0, 1.0)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluOrtho2D(0, 100, 0, 100)
+    gluOrtho2D(0, 400, 0, 400)
 
 def draw():
     glClear(GL_COLOR_BUFFER_BIT)
@@ -38,6 +39,18 @@ def translate(tx, ty):
     vector[1][2] = ty
     multiply(vector, compositeVector)
 
+def rotate(theta):
+    vector = [[0 for x in range(3)] for y in range(3)]
+    identity(vector)
+    theta = radians(theta)
+    #print (round(cos(theta)), sin(theta))
+    vector[0][0] = round(cos(theta))
+    vector[0][1] = round(-sin(theta))
+    vector[1][0] = round(sin(theta))
+    vector[1][1] = round(cos(theta))
+    multiply(vector, compositeVector) 
+    print compositeVector
+
 def identity(m):
     for i in range(3):
         m[i][i] = 1
@@ -45,6 +58,10 @@ def identity(m):
 def drawPolygon():
     identity(compositeVector)
     translate(trX, trY)
+
+    rotate(90)  # TODO
+
+
     
     for i in range(len(vertices)):
         matrix[0][0] = vertices[i][0]
