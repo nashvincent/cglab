@@ -6,8 +6,8 @@ import sys
 # Assuming homogeneous coordinates is of the from [x, y, 1]
 matrix = [[1 for x in range(1)] for y in range(3)]
 compositeVector = [[0 for x in range(3)] for y in range(3)]
-global vertices
 vertices = []
+global trX, trY
 
 def init():
     glClearColor(0.0, 0.0, 0.0, 1.0)
@@ -22,11 +22,14 @@ def draw():
     glFlush()
 
 def readInput():
+    global trX, trY
     n = input("Enter the number of vertices: ")
 
     for i in range(n):
         x, y = map(int, raw_input("Enter the coordiates: ").split())
         vertices.append([x, y])
+
+    trX, trY = map(int, raw_input("Enter the translate values: ").split())
 
 def translate(tx, ty):
     vector = [[0 for x in range(3)] for y in range(3)]
@@ -40,9 +43,8 @@ def identity(m):
         m[i][i] = 1
 
 def drawPolygon():
-    global vertices
     identity(compositeVector)
-    translate(50, 50)
+    translate(trX, trY)
     
     for i in range(len(vertices)):
         matrix[0][0] = vertices[i][0]
