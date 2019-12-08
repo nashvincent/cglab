@@ -15,14 +15,12 @@ def init():
 
 def readInput():
     global vertices
-	# n = input('Enter number of sides: ')
-	# for i in range(n):
-	# 		print 'Enter coordinate: '
-	# 		x,y = map(int, raw_input().split())
-	# 		vertices.append([x,y])
+	n = input('Enter number of sides: ')
+	for i in range(n):
+			print 'Enter coordinate: '
+			x,y = map(int, raw_input().split())
+			vertices.append([x,y])
 
-    n = 3
-    vertices = [[0, 0], [25, 25], [50, 0]]
 
 def identity(r,c):
 	a=[[0 for m in range(c)] for n in range(r)]
