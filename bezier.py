@@ -50,7 +50,7 @@ def Bezier():
         x = 0.0
         y = 0.0
 
-        for i in range(l + 1):
+        for i in range(num + 1):
             val = combination(num, i) * pow(count, i) * pow(1-count, num-i)
             x += val * pts[i][0]
             y += val * pts[i][1]
