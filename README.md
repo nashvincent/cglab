@@ -15,3 +15,6 @@ Output primitives and other computer graphics concepts implemented in PyOpenGL
 9. Recursive Boundary Fill Algorithm
 10. Sutherland Hodgeman Polygon Clipping Algorithm
 11. Bouncing Ball (2D Animation)
+12. 2D Transformations using Homogeneous Coordinate system
+13. Reflection
+14. Bezier Curve
