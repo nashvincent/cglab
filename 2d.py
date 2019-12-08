@@ -4,100 +4,135 @@ from OpenGL.GLUT import *
 import sys
 from math import sin, cos, pi, radians
 
-# Assuming homogeneous coordinates is of the form [x, y, 1]
-matrix = [[1 for x in range(1)] for y in range(3)]
-compositeVector = [[0 for x in range(3)] for y in range(3)]
+global vertices
 vertices = []
-global trX, trY
 
 def init():
     glClearColor(0.0, 0.0, 0.0, 1.0)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluOrtho2D(0, 400, 0, 400)
-
-def draw():
-    glClear(GL_COLOR_BUFFER_BIT)
-    glColor3f(1.0, 0.0, 0.0)
-    drawPolygon()
-    glFlush()
+    gluOrtho2D(-200, 200, -200, 200)
 
 def readInput():
-    global trX, trY
-    n = input("Enter the number of vertices: ")
+    global vertices
+	# n = input('Enter number of sides: ')
+	# for i in range(n):
+	# 		print 'Enter coordinate: '
+	# 		x,y = map(int, raw_input().split())
+	# 		vertices.append([x,y])
 
-    for i in range(n):
-        x, y = map(int, raw_input("Enter the coordiates: ").split())
-        vertices.append([x, y])
+    n = 3
+    vertices = [[0, 0], [25, 25], [50, 0]]
 
-    trX, trY = map(int, raw_input("Enter the translate values: ").split())
+def identity(r,c):
+	a=[[0 for m in range(c)] for n in range(r)]
+	for i in range(r):
+		for j in range(c):
+			if i==j:
+				a[i][j]=1
+
+	return a
+
+def multiply(a,b):
+	m=len(a)
+	n=len(a[0])
+	p=len(b)
+	q=len(b[0])
+	c=[[0 for col in range(q)] for row in range(m)]
+	for i in range(m):
+		for j in range(q):
+			for k in range(n):
+				c[i][j]+=a[i][k]*b[k][j]
+
+	return c
 
 def translate(tx, ty):
-    vector = [[0 for x in range(3)] for y in range(3)]
-    identity(vector)
-    vector[0][2] = tx
-    vector[1][2] = ty
-    multiply(vector, compositeVector)
+    global vertices
 
-def rotate(theta):
-    vector = [[0 for x in range(3)] for y in range(3)]
-    identity(vector)
-    theta = radians(theta)
-    #print (round(cos(theta)), sin(theta))
+    vector = identity(3, 3)
+    vector[2][0] = tx
+    vector[2][1] = ty
+
+    for i in range(len(vertices)):
+        matrix = [ [vertices[i][0], vertices[i][1], 1] ]
+        matrix = multiply(matrix, vector)
+        vertices[i][0] = matrix[0][0]
+        vertices[i][1] = matrix[0][1]
+
+def scale(sx, sy, xr, yr):
+    global vertices
+
+    translate(-xr, -yr)
+    vector = identity(3, 3)
+    vector[0][0] = sx
+    vector[1][1] = sy
+
+    for i in range(len(vertices)):
+        matrix = [ [vertices[i][0], vertices[i][1], 1] ]
+        matrix = multiply(matrix, vector)
+        vertices[i][0] = matrix[0][0]
+        vertices[i][1] = matrix[0][1]
+
+    translate(xr, yr)
+
+def rotate(theta, xr, yr):
+    global vertices
+
+    translate(-xr, -yr)
+    vector = identity(3, 3)
+    thetha = radians(theta)
     vector[0][0] = round(cos(theta))
     vector[0][1] = round(-sin(theta))
     vector[1][0] = round(sin(theta))
     vector[1][1] = round(cos(theta))
-    multiply(vector, compositeVector) 
-    print compositeVector
 
-def identity(m):
-    for i in range(3):
-        m[i][i] = 1
+    for i in range(len(vertices)):
+        matrix = [ [vertices[i][0], vertices[i][1], 1] ]
+        matrix = multiply(matrix, vector)
+        vertices[i][0] = matrix[0][0]
+        vertices[i][1] = matrix[0][1]
+
+    translate(xr, yr)
+
+
 
 def drawPolygon():
-    identity(compositeVector)
-    translate(trX, trY)
+    print "IN"
+    glClear(GL_COLOR_BUFFER_BIT)        #TODO: LOAD AXES TO MATRIX TO PRESERVE BACKGROUND
 
-    rotate(90)  # TODO
-
-
-    
     for i in range(len(vertices)):
-        matrix[0][0] = vertices[i][0]
-        matrix[1][0] = vertices[i][1]
-
-        multiply(compositeVector, matrix)
-        
-        vertices[i][0] = matrix[0][0]
-        vertices[i][1] = matrix[1][0]
-
-    for i in range(len(vertices) - 1):
-
         glBegin(GL_LINES)
         glVertex2f(vertices[i][0], vertices[i][1])
-        glVertex2f(vertices[i+1][0], vertices[i+1][1])
+        glVertex2f(vertices[(i+1)%len(vertices)][0], vertices[(i+1)%len(vertices)][1])
         glEnd()
         glFlush()
 
-    glBegin(GL_LINES)    
-    glVertex2f(vertices[i+1][0], vertices[i+1][1])
-    glVertex2f(vertices[0][0], vertices[0][1])
-    glEnd()
+def draw():
+    glClear(GL_COLOR_BUFFER_BIT)
 
-    glFlush()
+    drawPolygon()
 
+    while True:
+        choice = input("Enter your choice [1]Translate [2]Rotate [3]Scale [4]Exit\n")
 
-def multiply(matrix_a, matrix_b):
-	temp = [[0 for x in range(len(matrix_b[0]))] for y in range(len(matrix_a))]
-	for i in range(len(matrix_a)):
-		for j in range(len(matrix_b[0])):
-			for k in range(len(matrix_a)):
-				temp[i][j] += matrix_a[i][k] * matrix_b[k][j]
+        if choice == 1:
+            trX, trY = map(int, raw_input("Enter the translate values: ").split())
+            translate(trX, trY)
 
-	for i in range(len(matrix_b)):
-		for j in range(len(matrix_b[0])):
-			matrix_b[i][j]=temp[i][j]
+        elif choice == 2:
+            theta = input("Enter the angle: ")
+            xr, yr = map(int, raw_input("Enter the reference points: ").split())
+            rotate(theta, xr, yr)
+
+        elif choice == 3:
+            sx, sy = map(int, raw_input("Enter the scaling factors: ").split())
+            xr, yr = map(int, raw_input("Enter the reference points: ").split())
+            scale(sx, sy, xr, yr)
+
+        elif choice == 4:
+            sys.exit()
+
+        drawPolygon()
 
 def main():
     readInput()
