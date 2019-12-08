@@ -6,7 +6,6 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 import sys
-from time import sleep
 global n, vertices
 
 def init():
